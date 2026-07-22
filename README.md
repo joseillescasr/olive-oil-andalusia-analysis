@@ -25,8 +25,8 @@ Excel MAPA → Python/Colab → BigQuery → SQL → Looker Studio
 - Existe una correlación inversa entre producción y precio, con excepciones documentadas
 
 ## Dashboard
-[Ver dashboard en Looker Studio](#) ← enlace pendiente
+[[Ver dashboard en Looker Studio](#)](https://datastudio.google.com/reporting/459dfeb0-3f66-4d63-b2ac-262305ae5c08) ← enlace pendiente
 
 ## Autor
 José Illescas Regalett — Ingeniero Mecánico | F&B Management | Data Analytics
-[LinkedIn](#) ← añadir enlace
+linkedin.com/in/josé-illescas-regalett-719755132 ← añadir enlace
