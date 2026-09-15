@@ -21,6 +21,15 @@ ORDER BY anio;
 
 
 -- QUERY 2: Peso de cada CCAA en la producción nacional 2023
+-- NOTA DE CALIDAD DE DATOS:
+-- La tabla aceite_virgen_provincia_2023 mezcla en la misma columna "territorio"
+-- filas de nivel Comunidad Autónoma (ej. "ANDALUCÍA") y filas de nivel provincia
+-- (ej. "Jaén", "Córdoba"), sin ninguna columna que indique el nivel jerárquico.
+-- Por eso esta query usa una lista explícita de nombres en vez de un
+-- ORDER BY / LIMIT dinámico, que mezclaría provincias con comunidades.
+-- Además, "CASTILLA–LA MANCHA" usa un guion largo (en dash, U+2013) en el
+-- dato de origen, no un guion normal — hay que respetarlo en cualquier
+-- comparación exacta de texto.
 SELECT
   TRIM(territorio) AS territorio,
   `TOTAL`,
@@ -30,7 +39,7 @@ SELECT
     WHERE TRIM(territorio) = 'ESPAÑA'
   ) * 100, 2) AS pct_sobre_espana
 FROM `proyecto-aceite-oliva.aceite_oliva_andaluz.aceite_virgen_provincia_2023`
-WHERE TRIM(territorio) IN ('ANDALUCÍA', 'CASTILLA–LA MANCHA', 'EXTREMADURA', 'CATALUÑA', 'ARAGÓN')
+WHERE TRIM(territorio) IN ('ANDALUCÍA', 'CASTILLA–LA MANCHA', 'EXTREMADURA', 'CATALUÑA', 'C. VALENCIANA')
 ORDER BY `TOTAL` DESC;
 
 
@@ -56,4 +65,23 @@ SELECT
 FROM `proyecto-aceite-oliva.aceite_oliva_andaluz.aceituna_almazara_productos` a
 JOIN `proyecto-aceite-oliva.aceite_oliva_andaluz.precios_historicos` p
   ON a.anio = p.anio
+ORDER BY a.anio;
+
+
+
+-- QUERY 5: Vista auxiliar para el dashboard "Producción vs Precio 2013-2023"
+-- Se recreó porque la tabla original de esta vista se perdió en BigQuery,
+-- rompiendo el gráfico correspondiente en Looker Studio (detectado y corregido).
+-- Une producción nacional anual (aceituna_almazara_productos) con precios
+-- históricos (precios_historicos) por año.
+CREATE OR REPLACE VIEW `proyecto-aceite-oliva.aceite_oliva_andaluz.produccion_vs_precio` AS
+SELECT
+  a.anio,
+  a.aceituna_almazara_miles_ton AS almazara_miles_ton,
+  h.precio_calidad_alta,
+  h.precio_calidad_media,
+  h.precio_calidad_baja
+FROM `proyecto-aceite-oliva.aceite_oliva_andaluz.aceituna_almazara_productos` AS a
+JOIN `proyecto-aceite-oliva.aceite_oliva_andaluz.precios_historicos` AS h
+  ON a.anio = h.anio
 ORDER BY a.anio;
