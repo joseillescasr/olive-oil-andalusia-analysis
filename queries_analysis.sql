@@ -68,7 +68,6 @@ JOIN `proyecto-aceite-oliva.aceite_oliva_andaluz.precios_historicos` p
 ORDER BY a.anio;
 
 
-
 -- QUERY 5: Vista auxiliar para el dashboard "Producción vs Precio 2013-2023"
 -- Se recreó porque la tabla original de esta vista se perdió en BigQuery,
 -- rompiendo el gráfico correspondiente en Looker Studio (detectado y corregido).
