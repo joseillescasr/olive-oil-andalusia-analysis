@@ -44,6 +44,9 @@ ORDER BY `TOTAL` DESC;
 
 
 -- QUERY 3: Composición de calidad por CCAA 2023
+-- Se comparan las 3 CCAA con mayor volumen de producción (según Query 2)
+-- contra el promedio nacional (ESPAÑA), para ver si el liderazgo en volumen
+-- se corresponde con liderazgo en proporción de aceite de categoría "Extra".
 SELECT
   TRIM(territorio) AS territorio,
   ROUND(Extra / `TOTAL` * 100, 2) AS pct_extra,
